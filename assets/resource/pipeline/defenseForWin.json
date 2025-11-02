@@ -28,9 +28,15 @@
     },
     "按左26秒_for_win": {
         "recognition": "DirectHit",
-        "action": "LongPressKey",
-        "key": 65,
-        "duration": 26000,
+        "action": "Custom",
+        "custom_action": "SequentialLongPress",
+        "custom_action_param": {
+            "key_sequence": [
+                {"key": 65, "delay": 0},
+                {"key": 2, "delay": 500}
+            ],
+            "hold_duration": 14500
+        },
         "next": [
             "按上4秒_2_for_win"
         ]
@@ -86,7 +92,7 @@
         "custom_action": "LongPressWithTimeoutDetection",
         "custom_action_param": {
             "check_interval": 1000,
-            "total_timeout": 180000,
+            "total_timeout": 200000,
             "target_node": "again_for_win",
             "interrupt_node": "autoBattle_for_win"
         },
@@ -100,7 +106,7 @@
         "key": 69,
         "next": []
     },
-        "again_for_win": {
+    "again_for_win": {
         "recognition": "OCR",
         "expected": "再次进行",
         "timeout": 1000,

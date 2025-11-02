@@ -1,15 +1,14 @@
 {
+    "name": "MAD",
     "controller": [
-        {
-            "name": "安卓端",
-            "type": "Adb"
-        },
         {
             "name": "桌面端",
             "type": "Win32",
             "win32": {
                 "class_regex": ".*",
-                "window_regex": "Visual Studio"
+                "window_regex": "二重螺旋",
+                "input": 2,
+                "screencap": 1
             }
         }
     ],
@@ -18,13 +17,6 @@
             "name": "官服",
             "path": [
                 "{PROJECT_DIR}/resource"
-            ]
-        },
-        {
-            "name": "B 服",
-            "path": [
-                "{PROJECT_DIR}/resource",
-                "{PROJECT_DIR}/resource_bilibili"
             ]
         }
     ],
@@ -36,28 +28,9 @@
     },
     "task": [
         {
-            "name": "普通任务",
-            "entry": "again"
-        },
-        {
-            "name": "退出",
-            "entry": "exitBattle"
-        },
-        {
-            "name": "test_defense",
-            "entry": "按上6.2秒"
-        },
-        {
-            "name": "test_defense_for_win",
-            "entry": "按上6.2秒_for_win"
-        },
-        {
-            "name": "test_defense_for_win_again",
-            "entry": "按上6.2秒_for_win"
-        },
-        {
-            "name": "testOnErr",
-            "entry": "againForTest"
+            "name": "65级mod（扼守）",
+            "entry": "exitBattle_for_win",
+            "doc":"进入指定副本后，即可启动，会先自动退出一次复位"
         }
     ]
 }
