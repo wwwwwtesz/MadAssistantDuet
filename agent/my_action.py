@@ -4,7 +4,6 @@ from maa.context import Context
 import time
 import logging
 import json
-import asyncio
 
 # 获取日志记录器
 logger = logging.getLogger(__name__)

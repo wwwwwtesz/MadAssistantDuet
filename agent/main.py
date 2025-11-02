@@ -24,7 +24,7 @@ import my_reco
 def setup_logging():
     """配置日志系统，将日志输出到文件和控制台"""
     # 创建日志目录
-    log_dir = r".\log"
+    log_dir = r".\logs_agent"
     os.makedirs(log_dir, exist_ok=True)
     
     # 生成日志文件名（按日期和时间）

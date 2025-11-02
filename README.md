@@ -14,8 +14,9 @@
 > MAD指MAD Assistant Duet
 
 ## 使用
+
 1. 目前只支持桌面端（非模拟器），且游戏需使用无边框窗口运行，通过修改系统分辨率可以降低能耗
-2. 前往[release](https://github.com/huanshang141/MdaAssistantDuet/releases)下载对应版本，手动选择游戏窗口，然后直接运行对应任务即可，如果出现问题，先进行截图测试，如果截图失败，在设置-连接设置更改捕获方式和触控模式
+2. 前往[release](https://github.com/huanshang141/MdaAssistantDuet/releases)下载对应版本，解压后使用管理员权限运行`MFAAvalonia.exe`手动选择游戏窗口，然后直接运行对应任务即可，如果出现问题，先进行截图测试，如果截图失败，在设置-连接设置更改捕获方式和触控模式
 3. 游戏须在前台运行，需要后台挂机刷可以参考[后台运行](https://m7a.top/#/assets/docs/Background)
 4. 咕咕咕
 

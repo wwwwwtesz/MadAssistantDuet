@@ -7,8 +7,8 @@
             "win32": {
                 "class_regex": ".*",
                 "window_regex": "二重螺旋",
-                "input": 2,
-                "screencap": 1
+                "input": 1,
+                "screencap": 2
             }
         }
     ],
