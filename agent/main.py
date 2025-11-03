@@ -26,7 +26,6 @@ GAME_CONFIG = {
 import my_action
 import my_reco
 import common  # 导入通用自定义动作模块
-import test_recognition  # 导入测试识别模块
 
 
 def is_admin():
