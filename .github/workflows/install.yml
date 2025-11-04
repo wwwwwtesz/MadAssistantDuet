@@ -62,7 +62,7 @@ jobs:
 
   install:
     needs: meta
-    runs-on: ubuntu-latest
+    runs-on: windows-latest # 改为 Windows 环境以支持 pywin32
 
     steps:
       - uses: actions/checkout@v4
@@ -95,21 +95,42 @@ jobs:
           rm -f "${ARCHIVE_FILE_PATH}"
           echo "Archive cleanup command executed for MFAAvalonia."
 
-      - name: Install
-        shell: bash
+      - name: Install Python dependencies
         run: |
           python -m pip install -r ./requirements.txt
+          python -m pip install pyinstaller
+
+      - name: Build MaaAgent with PyInstaller
+        run: |
+          echo "Building MaaAgent.exe with PyInstaller..."
+          pyinstaller MaaAgent.spec
+
+          echo "MaaAgent.exe built successfully"
+          dir dist\MaaAgent.exe
+
+          echo "==================================="
+          $fileSize = (Get-Item dist\MaaAgent.exe).Length / 1MB
+          echo "MaaAgent.exe size: $($fileSize.ToString('0.00')) MB"
+          echo "==================================="
+        shell: pwsh
+
+      - name: Install
+        run: |
           python ./install.py ${{ needs.meta.outputs.tag }}
 
-          echo "Copying MFA files to install directory..."
-          mkdir -p install
-          rsync -av --ignore-existing MFA/ install/
+          echo "Copying MaaAgent.exe to install directory..."
+          New-Item -ItemType Directory -Force -Path install\agent
+          Copy-Item -Force dist\MaaAgent.exe install\agent\
 
-          mkdir -p install
-          cp -v "tools/DependencySetup_依赖库安装.bat" install/
-          cp -v "tools/InstallPythonDeps.bat" install/
-          cp -v "tools/InstallPythonDeps.ps1" install/
-          cp -v "requirements_win.txt" install/
+          echo "Copying MFA files to install directory..."
+          New-Item -ItemType Directory -Force -Path install
+          robocopy MFA install /E /XC /XN /XO
+
+          echo "Copying dependency setup tools..."
+          Copy-Item -Force tools\DependencySetup_依赖库安装.bat install\
+
+          echo "Build complete!"
+        shell: pwsh
 
       - uses: actions/upload-artifact@v4
         with:

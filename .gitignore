@@ -466,3 +466,6 @@ test
 docs/dev
 
 MFA
+
+build_agent.ps1
+MaaAgent.spec

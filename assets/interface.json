@@ -21,10 +21,8 @@
         }
     ],
     "agent": {
-        "child_exec": "python",
-        "child_args": [
-            "{PROJECT_DIR}/agent/main.py"
-        ]
+        "child_exec": "{PROJECT_DIR}/agent/MaaAgent.exe",
+        "child_args": []
     },
     "task": [
         {
