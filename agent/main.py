@@ -15,7 +15,6 @@ print(f"Python 路径: {sys.path[:3]}")  # 只打印前3个
 
 from maa.agent.agent_server import AgentServer
 from maa.toolkit import Toolkit
-import win32con
 
 # 全局配置变量
 GAME_CONFIG = {
