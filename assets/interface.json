@@ -6,7 +6,7 @@
             "type": "Win32",
             "win32": {
                 "class_regex": ".*",
-                "window_regex": "二重螺旋",
+                "window_regex": "二重螺旋|Duet Night Abyss",
                 "input": 1,
                 "screencap": 2
             }

@@ -73,11 +73,13 @@
     "def_map1_a4":{
         "recognition": "DirectHit",
         "action": "Custom",
-        "custom_action": "RunWithShift",
+        "custom_action": "RunWithJump",
         "custom_action_param": {
             "direction": "a",     
-            "duration": 12.5,       
-            "shift_delay": 0.05  
+            "duration": 13.5,  
+            "jump_interval": 1,
+            "jump_press_time": 0.15,
+            "dodge_delay": 0.05  
         },
         "next": ["def_map_a5"]
     },

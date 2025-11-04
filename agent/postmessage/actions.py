@@ -29,14 +29,14 @@ class GameWindowAction(CustomAction):
     提供通用的窗口句柄获取方法
     """
     
-    # 目标窗口标题关键字
-    WINDOW_TITLE_KEYWORD = "二重螺旋"
+    # 目标窗口标题关键字列表
+    WINDOW_TITLE_KEYWORDS = ["二重螺旋", "Duet Night Abyss"]
     
     def _get_window_handle(self, context: Context) -> int:
         """
         获取窗口句柄（通用方法）
         
-        优先查找包含 WINDOW_TITLE_KEYWORD 的窗口
+        优先查找包含 WINDOW_TITLE_KEYWORDS 中任一关键字的窗口
         
         Args:
             context: MaaFramework 上下文
@@ -45,30 +45,32 @@ class GameWindowAction(CustomAction):
             窗口句柄，如果获取失败返回 0
         """
         try:
-            # 方法 1: 精确匹配
-            hwnd = win32gui.FindWindow(None, self.WINDOW_TITLE_KEYWORD)
-            if hwnd and win32gui.IsWindow(hwnd):
-                logger.info(f"[_get_window_handle] [OK] 找到「{self.WINDOW_TITLE_KEYWORD}」窗口: {hwnd} (0x{hwnd:08X})")
-                return hwnd
+            # 方法 1: 精确匹配 - 遍历所有关键字
+            for keyword in self.WINDOW_TITLE_KEYWORDS:
+                hwnd = win32gui.FindWindow(None, keyword)
+                if hwnd and win32gui.IsWindow(hwnd):
+                    logger.info(f"[_get_window_handle] [OK] 找到「{keyword}」窗口: {hwnd} (0x{hwnd:08X})")
+                    return hwnd
             
-            # 方法 2: 模糊匹配 - 枚举所有窗口查找包含关键字的
+            # 方法 2: 模糊匹配 - 枚举所有窗口查找包含任一关键字的
             def find_window_callback(hwnd, param):
                 if win32gui.IsWindowVisible(hwnd):
                     title = win32gui.GetWindowText(hwnd)
-                    if self.WINDOW_TITLE_KEYWORD in title:
-                        param.append(hwnd)
+                    for keyword in self.WINDOW_TITLE_KEYWORDS:
+                        if keyword in title:
+                            param.append((hwnd, keyword, title))
+                            return
             
             found_windows = []
             win32gui.EnumWindows(find_window_callback, found_windows)
             
             if found_windows:
-                hwnd = found_windows[0]
-                title = win32gui.GetWindowText(hwnd)
-                logger.info(f"[_get_window_handle] [OK] 找到包含「{self.WINDOW_TITLE_KEYWORD}」的窗口: {hwnd} (0x{hwnd:08X})")
+                hwnd, keyword, title = found_windows[0]
+                logger.info(f"[_get_window_handle] [OK] 找到包含「{keyword}」的窗口: {hwnd} (0x{hwnd:08X})")
                 logger.info(f"[_get_window_handle] 窗口标题: '{title}'")
                 return hwnd
             
-            logger.error(f"[_get_window_handle] 未找到包含「{self.WINDOW_TITLE_KEYWORD}」的窗口")
+            logger.error(f"[_get_window_handle] 未找到包含 {self.WINDOW_TITLE_KEYWORDS} 中任一关键字的窗口")
             return 0
             
         except Exception as e:
@@ -400,4 +402,146 @@ class PressMultipleKeys(GameWindowAction):
             
         except Exception as e:
             logger.error(f"[PressMultipleKeys] 发生异常: {e}", exc_info=True)
+            return False
+
+
+class RunWithJump(GameWindowAction):
+    """
+    边跑边跳动作：先按下方向键，延迟后按下闪避键（奔跑），然后周期性短按空格键（跳跃）
+    
+    参数说明：
+    {
+        "direction": "w",        // 方向键：'w', 'a', 's', 'd' 或 'up', 'down', 'left', 'right'
+        "duration": 3.0,         // 总持续时长（秒）
+        "dodge_delay": 0.05,     // 按下方向键后，多久按下闪避键（秒），默认 0.05
+        "jump_interval": 0.5,    // 跳跃间隔（秒），默认 0.5 秒跳一次
+        "jump_press_time": 0.1   // 每次跳跃按键时长（秒），默认 0.1 秒
+    }
+    
+    注意：使用的闪避键从全局配置 main.GAME_CONFIG["dodge_key"] 中读取
+    """
+    
+    def run(
+        self,
+        context: Context,
+        argv: CustomAction.RunArg,
+    ) -> bool:
+        # 解析参数
+        try:
+            if isinstance(argv.custom_action_param, str):
+                params = json.loads(argv.custom_action_param)
+            elif isinstance(argv.custom_action_param, dict):
+                params = argv.custom_action_param
+            else:
+                logger.error(f"[RunWithJump] 参数类型错误: {type(argv.custom_action_param)}")
+                return False
+        except json.JSONDecodeError as e:
+            logger.error(f"[RunWithJump] JSON 解析失败: {e}")
+            logger.error(f"  参数内容: {argv.custom_action_param}")
+            return False
+        
+        # 获取参数
+        direction = params.get("direction", "w")
+        duration = params.get("duration", 3.0)
+        dodge_delay = params.get("dodge_delay", 0.05)
+        jump_interval = params.get("jump_interval", 0.5)
+        jump_press_time = params.get("jump_press_time", 0.1)
+        
+        # 从全局配置获取闪避键(现在是虚拟键码 int)
+        dodge_vk = main.GAME_CONFIG.get("dodge_key", win32con.VK_SHIFT)
+        
+        logger.info("=" * 60)
+        logger.info(f"[RunWithJump] 开始边跑边跳")
+        logger.info(f"  方向: {direction}")
+        logger.info(f"  总持续时长: {duration:.2f}秒")
+        logger.info(f"  闪避键延迟: {dodge_delay:.3f}秒")
+        logger.info(f"  跳跃间隔: {jump_interval:.2f}秒")
+        logger.info(f"  跳跃按键时长: {jump_press_time:.3f}秒")
+        logger.info(f"  使用闪避键: VK={dodge_vk} (0x{dodge_vk:02X})")
+        
+        try:
+            # 获取窗口句柄
+            hwnd = self._get_window_handle(context)
+            if not hwnd:
+                logger.error("[RunWithJump] 无法获取窗口句柄")
+                return False
+            
+            # 创建输入辅助对象
+            input_helper = PostMessageInputHelper(hwnd)
+            
+            # 获取方向键的虚拟键码
+            direction_vk = input_helper.get_direction_vk(direction)
+            
+            logger.info(f"[RunWithJump] 方向键 VK={direction_vk}, 闪避键 VK={dodge_vk}")
+            
+            # 1. 按下方向键
+            logger.info(f"[RunWithJump] 步骤 1: 按下方向键 '{direction}'")
+            input_helper.key_down(direction_vk, activate=True)
+            
+            # 2. 短暂延迟后按下闪避键
+            if dodge_delay > 0:
+                logger.debug(f"[RunWithJump] 等待 {dodge_delay:.3f}秒...")
+                time.sleep(dodge_delay)
+            
+            logger.info(f"[RunWithJump] 步骤 2: 按下闪避键 (VK=0x{dodge_vk:02X})")
+            input_helper.key_down(dodge_vk, activate=False)
+            
+            # 3. 周期性跳跃，直到总时长结束
+            logger.info(f"[RunWithJump] 步骤 3: 开始周期性跳跃...")
+            start_time = time.time()
+            jump_count = 0
+            next_jump_time = start_time + jump_interval
+            
+            while True:
+                current_time = time.time()
+                elapsed_time = current_time - start_time
+                
+                # 检查是否达到总时长
+                if elapsed_time >= duration:
+                    logger.info(f"[RunWithJump] 达到总时长 {duration:.2f}秒，停止跳跃")
+                    break
+                
+                # 检查是否该跳跃了
+                if current_time >= next_jump_time:
+                    jump_count += 1
+                    remaining_time = duration - elapsed_time
+                    logger.info(f"[RunWithJump] -> 第 {jump_count} 次跳跃 (剩余: {remaining_time:.2f}秒)")
+                    
+                    # 按下空格键
+                    input_helper.key_down(win32con.VK_SPACE, activate=False)
+                    
+                    # 保持按下状态
+                    time.sleep(jump_press_time)
+                    
+                    # 释放空格键
+                    input_helper.key_up(win32con.VK_SPACE)
+                    
+                    # 计算下一次跳跃时间
+                    next_jump_time = current_time + jump_interval
+                else:
+                    # 短暂休眠，避免 CPU 占用过高
+                    time.sleep(0.01)
+            
+            # 4. 释放闪避键
+            logger.info(f"[RunWithJump] 步骤 4: 释放闪避键")
+            input_helper.key_up(dodge_vk)
+            
+            # 5. 释放方向键
+            logger.info(f"[RunWithJump] 步骤 5: 释放方向键")
+            input_helper.key_up(direction_vk)
+            
+            logger.info(f"[RunWithJump] [OK] 完成边跑边跳 {duration:.2f}秒，共跳跃 {jump_count} 次")
+            logger.info("=" * 60)
+            
+            return True
+            
+        except Exception as e:
+            logger.error(f"[RunWithJump] 发生异常: {e}", exc_info=True)
+            # 尝试释放所有按键
+            try:
+                input_helper.key_up(win32con.VK_SPACE)
+                input_helper.key_up(dodge_vk)
+                input_helper.key_up(direction_vk)
+            except:
+                pass
             return False
