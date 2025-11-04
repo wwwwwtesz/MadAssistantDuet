@@ -107,7 +107,8 @@ jobs:
 
           mkdir -p install
           cp -v "tools/DependencySetup_依赖库安装.bat" install/
-          cp -v "tools/PythonDependencySetup_Python依赖安装.bat" install/
+          cp -v "tools/InstallPythonDeps.bat" install/
+          cp -v "tools/InstallPythonDeps.ps1" install/
           cp -v "requirements_win.txt" install/
 
       - uses: actions/upload-artifact@v4
