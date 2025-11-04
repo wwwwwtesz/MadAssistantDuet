@@ -63,7 +63,7 @@ if (Test-Path "build") {
 
 # 执行打包
 Write-Host "执行 PyInstaller..." -ForegroundColor Cyan
-pyinstaller MaaAgent.spec --collect-all pywin32
+pyinstaller MaaAgent.spec
 
 Write-Host ""
 

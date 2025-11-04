@@ -104,18 +104,16 @@ jobs:
       - name: Build MaaAgent with PyInstaller
         run: |
           echo "Building MaaAgent.exe with PyInstaller..."
-          pyinstaller tools/MaaAgent.spec --collect-all pywin32
-
+          pyinstaller tools/MaaAgent.spec
+          
           echo "MaaAgent.exe built successfully"
           dir dist\MaaAgent.exe
-
+          
           echo "==================================="
           $fileSize = (Get-Item dist\MaaAgent.exe).Length / 1MB
           echo "MaaAgent.exe size: $($fileSize.ToString('0.00')) MB"
           echo "==================================="
-        shell: pwsh
-
-      - name: Install
+        shell: pwsh      - name: Install
         run: |
           python ./install.py ${{ needs.meta.outputs.tag }}
 

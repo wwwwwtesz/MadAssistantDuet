@@ -469,3 +469,5 @@ MFA
 tools/dev
 
 deps_official_backup
+
+dist

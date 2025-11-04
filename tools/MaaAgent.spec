@@ -9,26 +9,36 @@ MaaAgent PyInstaller 配置文件
 """
 
 import os
+import sys
+from PyInstaller.utils.hooks import collect_all, collect_data_files, collect_dynamic_libs
 
-# 获取项目根目录（spec 文件在 tools/ 下，需要返回上一级）
+# 获取项目根目录(spec 文件在 tools/ 下,需要返回上一级)
 spec_root = os.path.dirname(os.path.abspath(SPECPATH))
+
+# 收集 pywin32 的所有内容
+pywin32_datas, pywin32_binaries, pywin32_hiddenimports = collect_all('pywin32')
+
+# 收集 maa 包的所有内容(包括 DLL 和子模块)
+maa_datas, maa_binaries, maa_hiddenimports = collect_all('maa')
 
 block_cipher = None
 
 a = Analysis(
-    [os.path.join(spec_root, 'agent/main.py')],
+    [os.path.join(spec_root, 'agent', 'main.py')],
     pathex=[],
-    binaries=[],
+    binaries=pywin32_binaries + maa_binaries,
     datas=[
-        (os.path.join(spec_root, 'agent/config'), 'config'),
-        (os.path.join(spec_root, 'agent/postmessage'), 'postmessage'),
-    ],
+        (os.path.join(spec_root, 'agent', 'config'), 'config'),
+        (os.path.join(spec_root, 'agent', 'postmessage'), 'postmessage'),
+    ] + pywin32_datas + maa_datas,
     hiddenimports=[
         'win32timezone',
         'win32api',
         'win32con',
         'win32gui',
-    ],
+        'maa.agent',
+        'maa.agent.agent_server',
+    ] + pywin32_hiddenimports + maa_hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
