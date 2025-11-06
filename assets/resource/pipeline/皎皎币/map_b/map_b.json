@@ -1,0 +1,149 @@
+{
+    "coin_is_map_b": {
+        "recognition": "TemplateMatch",
+        "template": "jjb/map_b/皎皎币70-b-map.png",
+        "method": 5,
+        "threshold": 0.8,
+        "roi" : [0,0,280,280],
+        "action": "DoNothing",
+        "post_delay": 2000,
+        "next": ["coin_map_b_both_1"]
+    },
+   "coin_map_b_both_1":{
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "RunWithShift",
+        "custom_action_param": {
+            "direction": "w",
+            "duration": 4,
+            "shift_delay": 0.05
+        },
+        "next": ["coin_map_b_both_2"]
+    },
+    "coin_map_b_both_2":{
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "RunWithShift",
+        "custom_action_param": {
+            "direction": "a",
+            "duration": 3,
+            "shift_delay": 0.05
+        },
+        "next": ["coin_map_b_both_3"]
+    },
+    "coin_map_b_both_3":{
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "RunWithShift",
+        "custom_action_param": {
+            "direction": "w",
+            "duration": 0.7,
+            "shift_delay": 0.05
+        },
+        "next": ["coin_map_b_both_4"]
+    },
+    "coin_map_b_both_4":{
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "RunWithJump",
+        "custom_action_param": {
+            "direction": "a",
+            "duration": 13.5,
+            "jump_interval": 1,
+            "jump_press_time": 0.15,
+            "dodge_delay": 0.05
+        },
+        "next": ["coin_map_b_both_5"]
+    },
+    "coin_map_b_both_5":{
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "ResetCharacterPosition",
+        "custom_action_param": {
+            "template_path": "common/其他.png",
+            "wait_delay": 800
+        },
+        "timeout": 5000,
+        "on_error": ["coin_entry"],
+        "next": ["coin_map_b_judge_for_one","coin_map_b_judge_for_two"]
+    },
+
+    "coin_map_b_judge_for_one": {
+        "recognition": "TemplateMatch",
+        "template": "jjb/map_b/70-b-1.png",
+        "method": 5,
+        "threshold": 0.8,
+        "roi" : [0,0,280,280],
+        "action": "DoNothing",
+        "post_delay": 2000,
+        "next": ["coin_map_b_side_one_1"]
+    },
+    "coin_map_b_side_one_1":{
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "d",
+            "duration": 5
+        },
+        "next": ["coin_map_b_side_one_2"]
+    },
+    "coin_map_b_side_one_2":{
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "RunWithJump",
+        "custom_action_param": {
+            "direction": "w",
+            "duration": 12.2,
+            "dodge_delay": 0.05,
+            "jump_interval": 1,
+            "jump_press_time": 0.1
+        },
+        "next": ["coin_map_b_side_one_3"]
+    },
+    "coin_map_b_side_one_3":{
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "d",
+            "duration": 1
+        },
+        "next": ["coin_auto_battle"]
+    },
+
+    "coin_map_b_judge_for_two": {
+        "recognition": "TemplateMatch",
+        "template": "jjb/map_b/70-b-2.png",
+        "method": 5,
+        "threshold": 0.8,
+        "roi" : [0,0,280,280],
+        "action": "DoNothing",
+        "post_delay": 2000,
+        "next": ["coin_map_b_side_two_1"]
+    },
+    "coin_map_b_side_two_1":{
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "RunWithShift",
+        "custom_action_param": {
+            "direction": "a",
+            "duration": 2.5,
+            "shift_delay": 0.05
+        },
+        "next": ["coin_map_b_side_two_2"]
+    },
+    "coin_map_b_side_two_2":{
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "RunWithJump",
+        "custom_action_param": {
+            "direction": "s",
+            "duration": 2,
+            "dodge_delay": 0.05,
+            "jump_interval": 0.5,
+            "jump_press_time": 0.1
+        },
+        "next": ["coin_auto_battle"]
+    }
+}

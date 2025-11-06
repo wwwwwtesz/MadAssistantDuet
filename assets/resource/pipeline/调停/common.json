@@ -32,9 +32,10 @@
     },
     "mediate_in_battle":{
         "recognition": "OCR",
-        "expected": "白",
-        "post_delay": 2000,
+        "expected": "破解机关",
         "action": "DoNothing",
+        "timeout": 20000,
+        "on_error": ["mediate_entry"],
         "next": ["mediate_a1"]
     },
     "mediate_a1":{
@@ -117,7 +118,7 @@
         "custom_action": "LongPressKey",
         "custom_action_param": {
             "key": "w",
-            "duration": 1.5
+            "duration": 2
         },
         "next": ["mediate_a10"]
     },
@@ -175,15 +176,15 @@
     "mediate_a15":{
         "recognition": "DirectHit",
         "action": "Custom",
-        "custom_action": "LongPressWithTimeoutDetection",
+        "custom_action": "AutoBattle",
         "custom_action_param": {
             "check_interval": 3000,
-            "total_timeout": 40000,
+            "total_timeout": 60000,
             "target_node": "mediate_win",
             "interrupt_node": "autoBattle_for_win"
         },
         "on_error": ["mediate_entry"],
-        "next": []
+        "next": ["mediate_a16"]
     },
     "mediate_win": {
         "recognition": "OCR",

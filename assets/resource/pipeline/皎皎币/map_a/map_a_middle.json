@@ -1,0 +1,94 @@
+{
+    "coin_is_map_a_middle": {
+        "recognition": "OCR",
+        "expected" : "保护目标",
+        "method": 5,
+        "roi" : [600,450,150,150],
+        "action": "DoNothing",
+        "next": ["coin_map_a_middle_1"]
+    },
+    "coin_map_a_middle_1": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "w",
+            "duration": 11
+        },
+        "next": ["coin_map_a_middle_2"]
+    },
+    "coin_map_a_middle_2": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "RunWithJump",
+        "custom_action_param": {
+            "direction": "w",
+            "duration": 13.5,
+            "dodge_delay": 0.05,
+            "jump_interval": 1,
+            "jump_press_time": 0.1
+        },
+        "next": ["coin_map_a_middle_3"]
+    },
+    "coin_map_a_middle_3": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "d",
+            "duration": 1.8
+        },
+        "next": ["coin_map_a_middle_4"]
+    },
+    "coin_map_a_middle_4": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "RunWithShift",
+        "custom_action_param": {
+            "direction": "w",
+            "duration": 3,
+            "shift_delay": 0.05
+        },
+        "next": ["coin_map_a_middle_5"]
+    },
+    "coin_map_a_middle_5": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "ResetCharacterPosition",
+        "custom_action_param": {
+            "template_path": "common/其他.png",
+            "wait_delay": 800
+        },
+        "timeout": 5000,
+        "on_error": "coin_entry",
+        "next": ["coin_map_a_middle_is_s","coin_map_a_middle_is_w"]
+    },
+    "coin_map_a_middle_is_s": {
+        "recognition": "TemplateMatch",
+        "template": "jjb/map_a/70-a-middle-s.png",
+        "method": 5,
+        "threshold": 0.8,
+        "roi" : [0,0,280,280],
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "s",
+            "duration": 1
+        },
+        "next": ["coin_auto_battle"]
+    },
+    "coin_map_a_middle_is_w": {
+        "recognition": "TemplateMatch",
+        "template": "jjb/map_a/70-a-middle-w.png",
+        "method": 5,
+        "threshold": 0.8,
+        "roi" : [0,0,280,280],
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "w",
+            "duration": 1
+        },
+        "next": ["coin_auto_battle"]
+    }
+}

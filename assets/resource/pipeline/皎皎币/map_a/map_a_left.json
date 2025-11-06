@@ -1,0 +1,136 @@
+{
+    "coin_is_map_a_left": {
+        "recognition": "OCR",
+        "expected" : "保护目标",
+        "roi" : [350,400,150,150],
+        "action": "DoNothing",
+        "next": ["coin_map_a_left_1"]
+    },
+    "coin_map_a_left_1": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "w",
+            "duration": 11
+        },
+        "next": ["coin_map_a_left_2"]
+    },
+    "coin_map_a_left_2": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "RunWithJump",
+        "custom_action_param": {
+            "direction": "w",
+            "duration": 12,
+            "dodge_delay": 0.05,
+            "jump_interval": 1,
+            "jump_press_time": 0.1
+        },
+        "next": ["coin_map_a_left_3"]
+    },
+    "coin_map_a_left_3": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "RunWithShift",
+        "custom_action_param": {
+            "direction": "a",
+            "duration": 7.5,
+            "shift_delay": 0.05
+        },
+        "post_delay": 2000,
+        "next": ["coin_map_a_left_4"]
+    },
+    "coin_map_a_left_4": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "s",
+            "duration": 0.7
+        },
+        "next": ["coin_map_a_left_5"]
+    },
+    "coin_map_a_left_5": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "a",
+            "duration": 2.3
+        },
+        "next": ["coin_map_a_left_6"]
+    },
+    "coin_map_a_left_6": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "RunWithShift",
+        "custom_action_param": {
+            "direction": "w",
+            "duration": 5.5,
+            "shift_delay": 0.05
+        },
+        "next": ["coin_map_a_left_7"]
+    },
+    "coin_map_a_left_7": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "d",
+            "duration": 1.5
+        },
+        "next": ["coin_map_a_left_8"]
+    },
+    "coin_map_a_left_8": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "RunWithShift",
+        "custom_action_param": {
+            "direction": "w",
+            "duration": 3,
+            "shift_delay": 0.05
+        },
+        "next": ["coin_map_a_left_9"]
+    },
+    "coin_map_a_left_9": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "ResetCharacterPosition",
+        "custom_action_param": {
+            "template_path": "common/其他.png",
+            "wait_delay": 800
+        },
+        "timeout": 5000,
+        "on_error": "coin_entry",
+        "next": ["coin_map_a_left_is_a","coin_map_a_left_is_d"]
+    },
+    "coin_map_a_left_is_a": {
+        "recognition": "TemplateMatch",
+        "template": "jjb/map_a/70-a-left-a.png",
+        "method": 5,
+        "threshold": 0.8,
+        "roi" : [0,0,280,280],
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "a",
+            "duration": 1
+        },
+        "next": ["coin_auto_battle"]
+    },
+    "coin_map_a_left_is_d": {
+        "recognition": "TemplateMatch",
+        "template": "jjb/map_a/70-a-left-d.png",
+        "method": 5,
+        "threshold": 0.8,
+        "roi" : [0,0,280,280],
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "d",
+            "duration": 1
+        },
+        "next": ["coin_auto_battle"]
+    }
+}

@@ -17,5 +17,12 @@
         },
         "next": []
 
+    },
+    "autoBattle_for_win":{
+        "recognition": "DirectHit",
+        "action": "ClickKey",
+        "post_delay": 5000,
+        "key": 69,
+        "next": []
     }
 }
