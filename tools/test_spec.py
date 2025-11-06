@@ -6,7 +6,7 @@ print(f"Current directory: {os.getcwd()}")
 print(f"sys.argv: {sys.argv}")
 
 # 模拟 PyInstaller 设置 SPECPATH
-SPECPATH = r"d:\WorkSpace\MdaDuetAssistant\tools\MaaAgent.spec"
+SPECPATH = r"C:\Users\mimi\PycharmProjects\MadAssistantDuet\tools\MaaAgent.spec"
 
 print(f"\nSPECPATH: {SPECPATH}")
 print(f"os.path.dirname(SPECPATH): {os.path.dirname(SPECPATH)}")

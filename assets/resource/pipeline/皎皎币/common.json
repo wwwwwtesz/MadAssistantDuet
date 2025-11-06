@@ -1,0 +1,141 @@
+{
+    "coin_entry":{
+        "recognition": "DirectHit",
+        "action": "ClickKey",
+        "key": 27,
+        "next": ["coin_giveup"]
+    },
+    "coin_giveup":{
+        "recognition": "OCR",
+        "expected": ["放弃挑战"],
+        "action": "Click",
+        "next": ["coin_confirm"]
+    },
+    "coin_confirm":{
+        "recognition": "OCR",
+        "expected": ["确定"],
+        "action": "Click",
+        "next": ["coin_again"]
+    },
+    "coin_again": {
+        "recognition": "OCR",
+        "expected": "再次进行",
+        "timeout": 1000,
+        "action": "Click",
+        "next": ["coin_start"]
+    },
+    "coin_start": {
+        "recognition": "OCR",
+        "expected": "开始挑战",
+        "action": "Click",
+        "next": ["coin_in_battle"]
+    },
+    "coin_in_battle": {
+        "recognition": "OCR",
+        "expected": "前往目标点",
+        "post_delay": 2000,
+        "action": "DoNothing",
+        "next": ["coin_is_map_a"]
+    },
+    "coin_is_map_a": {
+        "recognition": "TemplateMatch",
+        "template": "jjb/map_a/皎皎币70-a-map.png",
+        "method": 5,
+        "roi" : [12,12,180,180],
+        "timeout": 3000,
+        "action": "DoNothing",
+        "on_error": ["coin_entry"],
+        "next": ["coin_is_map_a_1"]
+    },
+    "coin_is_map_a_1": {
+        "recognition": "TemplateMatch",
+        "template": "jjb/map_a/70-a-1.png",
+        "method": 5,
+        "roi" : [633,504,47,13],
+        "timeout": 3000,
+        "action": "DoNothing",
+        "on_error": ["coin_is_map_a_2"],
+        "next": ["coin_map_a_1"]
+    },
+    "coin_map_a_1": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "w",
+            "duration": 6
+        },
+        "next": []
+    },
+
+    "coin_is_map_a_2": {
+        "recognition": "OCR",
+        "expected" : "保护目标",
+        "method": 5,
+        "roi" : [761,0,198,720],
+        "timeout": 3000,
+        "action": "DoNothing",
+        "on_error": ["coin_is_map_a_3"],
+        "next": ["coin_map_a_2"]
+    },
+    "coin_map_a_2": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "a",
+            "duration": 6
+        }
+    },
+
+    "coin_is_map_a_3": {
+        "recognition": "TemplateMatch",
+        "template": "jjb/map_a/70-a-3-bak.png",
+        "method": 5,
+        "roi" : [398,471,62,56],
+        "timeout": 3000,
+        "action": "DoNothing",
+        "on_error": ["coin_entry"],
+        "next": ["coin_map_a_3"]
+    },
+    "coin_map_a_3": {
+        "recognition": "DirectHit",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "d",
+            "duration": 6
+        }
+    },
+
+
+    "coin_is_map_b": {
+        "recognition": "TemplateMatch",
+        "template": "jjb/map_b/皎皎币70-b-map.png",
+        "method": 5,
+        "roi" : [12,12,180,180],
+        "timeout": 3000,
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "w",
+            "duration": 6
+        },
+        "on_error": ["coin_entry"],
+        "next": ["coin_is_map_b_1"]
+    },
+    "coin_is_map_b_1": {
+        "recognition": "TemplateMatch",
+        "template": "jjb/map_b/70-b-1.png",
+        "method": 5,
+        "roi" : [243,379,46,13],
+        "timeout": 3000,
+        "action": "Custom",
+        "custom_action": "LongPressKey",
+        "custom_action_param": {
+            "key": "s",
+            "duration": 6
+        },
+        "on_error": ["coin_entry"],
+        "next": []
+    }
+}
